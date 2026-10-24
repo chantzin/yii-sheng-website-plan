@@ -1,0 +1,549 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>銥晟科技網站建置規劃書</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Crect x='4' y='4' width='112' height='112' rx='26' fill='%232b2a7a'/%3E%3Cpath d='M20 26 L44 56 L68 26 M44 56 V94' fill='none' stroke='%23fff' stroke-width='11'/%3E%3Cpath d='M100 44 H78 V62 H100 V80 H76' fill='none' stroke='%23fff' stroke-opacity='.85' stroke-width='8'/%3E%3Ccircle cx='100' cy='44' r='6' fill='%23c9a24b'/%3E%3Ccircle cx='76' cy='80' r='6' fill='%23c9a24b'/%3E%3C/svg%3E">
+<style>
+:root{
+  --navy:#2b2a7a; --navy2:#1b1f6b; --acc:#0a84d6; --gold:#c9a24b; --gold2:#f3e6c0;
+  --bg:#f5f6fa; --card:#fff; --fg:#22243a; --mut:#6a6e86; --line:#dfe2ee; --row:#f0f2f8;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font:16px/1.75 "Noto Sans TC","Microsoft JhengHei","PingFang TC",system-ui,sans-serif;background:var(--bg);color:var(--fg);-webkit-text-size-adjust:100%}
+.mono{font-family:"IBM Plex Mono",Consolas,monospace}
+a{color:var(--acc);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* ===== Hero ===== */
+.hero{position:relative;overflow:hidden;background:linear-gradient(120deg,var(--navy2),var(--navy) 55%,#0a6fc0);color:#fff;padding:56px 20px 44px}
+.hero::before{content:"";position:absolute;inset:0;opacity:.14;background-image:linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px);background-size:34px 34px;pointer-events:none}
+.hero .in{position:relative;max-width:1120px;margin:0 auto}
+.hero .eyebrow{display:inline-block;font:500 12px "IBM Plex Mono",Consolas,monospace;letter-spacing:.16em;color:#ffd76a;border:1px solid rgba(255,215,106,.4);border-radius:99px;padding:4px 14px;margin-bottom:18px}
+.hero h1{font-size:clamp(26px,5.4vw,44px);font-weight:700;line-height:1.25;letter-spacing:.03em;margin-bottom:10px}
+.hero p{font-size:clamp(14px,2.2vw,17px);opacity:.92;max-width:640px;margin-bottom:24px}
+.hero .meta{display:flex;flex-wrap:wrap;gap:10px;font-size:13px;opacity:.85}
+.hero .meta span{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);border-radius:6px;padding:4px 12px}
+.statbar{background:var(--card);border-bottom:1px solid var(--line);padding:16px 20px}
+.statbar .in{max-width:1120px;margin:0 auto;display:flex;flex-wrap:wrap;gap:12px 28px;justify-content:space-between}
+.stat{display:flex;align-items:baseline;gap:8px;min-width:110px}
+.stat b{font:700 26px/1 "IBM Plex Mono",Consolas,monospace;color:var(--navy)}
+.stat b small{font-size:14px}
+.stat span{font-size:12.5px;color:var(--mut)}
+
+/* ===== 版面：導覽 + 內容 ===== */
+.layout{max-width:1120px;margin:0 auto;padding:26px 20px 80px;display:block}
+@media(min-width:860px){
+  .layout{display:grid;grid-template-columns:228px minmax(0,1fr);gap:40px;align-items:start}
+}
+nav.toc{display:none;margin-bottom:24px}
+@media(min-width:860px){
+  nav.toc{display:block;position:sticky;top:18px;max-height:calc(100vh - 36px);overflow:auto;background:var(--card);border:1px solid var(--line);border-top:3px solid var(--navy);border-radius:8px;padding:14px 12px}
+}
+nav.toc .ttl{font:700 12px "IBM Plex Mono",Consolas,monospace;letter-spacing:.14em;color:var(--navy);padding:0 8px 8px;border-bottom:1px solid var(--line);margin-bottom:8px}
+nav.toc a{display:block;color:var(--fg);padding:5px 8px;font-size:13.5px;border-radius:4px}
+nav.toc a .n{color:var(--acc);font-family:"IBM Plex Mono",Consolas,monospace;font-size:12px;margin-right:5px}
+nav.toc a:hover{background:var(--row);text-decoration:none}
+nav.toc a.on{background:var(--navy);color:#fff}
+nav.toc a.on .n{color:#ffd76a}
+main{min-width:0}
+
+/* 手機章節跳轉 */
+.mnav{margin-bottom:18px}
+@media(min-width:860px){.mnav{display:none}}
+.mnav select{width:100%;font:inherit;color:var(--fg);background:var(--card);border:1px solid var(--line);border-radius:6px;padding:10px 12px;font-size:16px}
+
+/* ===== 章節 ===== */
+section.sec{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:26px 22px 30px;margin-bottom:22px;scroll-margin-top:16px}
+.sec-head{display:flex;align-items:baseline;gap:12px;border-bottom:2px solid var(--line);padding-bottom:10px;margin-bottom:18px}
+.sec-head .no{font:700 15px "IBM Plex Mono",Consolas,monospace;color:var(--gold);letter-spacing:.05em}
+.sec-head h2{font-size:clamp(19px,3vw,24px);color:var(--navy);line-height:1.3}
+h3{font-size:16.5px;color:var(--navy);margin:22px 0 8px}
+h3:first-of-type{margin-top:0}
+p.lead{color:var(--mut);margin-bottom:10px}
+p+p{margin-top:8px}
+ul.plain{margin:8px 0 10px;padding-left:22px}
+ul.plain li{margin:4px 0}
+.mut{color:var(--mut)}
+.note{font-size:13.5px;color:var(--mut);background:var(--row);border-left:3px solid var(--gold);padding:8px 12px;border-radius:0 6px 6px 0;margin-top:10px}
+.tag{display:inline-block;font-size:12px;background:var(--row);color:var(--navy);border-radius:99px;padding:1px 10px;margin-right:4px}
+.tag.warn{background:#fff4d6;color:#8a6d00}
+code{font-family:"IBM Plex Mono",Consolas,monospace;font-size:13px;background:var(--row);border-radius:4px;padding:1px 6px}
+
+/* 表格 */
+.tbl{width:100%;border-collapse:collapse;font-size:14px;table-layout:fixed;margin:10px 0 6px}
+.tbl th{background:var(--navy);color:#fff;text-align:left;font-weight:500;padding:8px 10px;border:1px solid var(--navy);font-size:13.5px}
+.tbl td{padding:7px 10px;border:1px solid var(--line);vertical-align:top;overflow-wrap:break-word}
+.tbl tr:nth-child(even) td{background:var(--row)}
+.tbl .num{font-family:"IBM Plex Mono",Consolas,monospace;text-align:center;color:var(--navy);font-weight:500}
+.tbl.t-c1 th:first-child{width:22%}
+.tbl.t-c2 th:first-child{width:16%}
+.tbl.t-c3 th:first-child{width:30%}
+.tbl.t-c4 th:first-child{width:18%}
+.tbl.t-c5 th:first-child{width:24%}
+.tbl.t-c6 th:first-child{width:26%}
+.tbl.t-c7 th:first-child{width:14%}
+.tbl.t-c8 th:first-child{width:20%}
+
+/* 統計卡 */
+.kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:12px 0 4px}
+@media(min-width:640px){.kpis{grid-template-columns:repeat(4,1fr)}}
+.kpi{background:var(--row);border-radius:8px;padding:12px 14px}
+.kpi b{display:block;font:700 24px/1.2 "IBM Plex Mono",Consolas,monospace;color:var(--navy)}
+.kpi span{font-size:12.5px;color:var(--mut)}
+
+/* 架構圖 */
+.arch{margin:14px 0;display:flex;flex-direction:column;align-items:center;gap:0}
+.arch .node{width:100%;max-width:520px;background:var(--card);border:1px solid var(--line);border-top:3px solid var(--navy);border-radius:8px;padding:12px 16px;text-align:center}
+.arch .node b{display:block;font-size:15px;color:var(--navy)}
+.arch .node span{font-size:12.5px;color:var(--mut)}
+.arch .node.db{border-top-color:var(--gold)}
+.arch .node.ng{border-top-color:var(--acc)}
+.arch .arr{width:100%;max-width:520px;text-align:center;color:var(--acc);font-size:15px;line-height:1;padding:4px 0}
+.arch .side{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:8px}
+.arch .side .node{width:auto;min-width:140px;flex:1 1 140px;border-top-width:2px}
+
+/* 時間軸 */
+.tl{position:relative;margin:16px 0 6px;padding-left:0}
+.tl::before{content:"";position:absolute;left:15px;top:8px;bottom:8px;width:2px;background:var(--line)}
+@media(min-width:640px){.tl::before{left:19px}}
+.tl-item{position:relative;padding:0 0 18px 46px}
+@media(min-width:640px){.tl-item{padding-left:56px}}
+.tl-item::before{box-sizing:border-box;content:"";position:absolute;left:9px;top:7px;width:14px;height:14px;border-radius:50%;background:var(--navy);border:3px solid var(--card);box-shadow:0 0 0 1px var(--navy);z-index:1}
+@media(min-width:640px){.tl-item::before{left:13px}}
+.tl-item.done::before{background:var(--gold);box-shadow:0 0 0 1px var(--gold)}
+.tl-item .st{font:700 13px "IBM Plex Mono",Consolas,monospace;color:var(--acc);letter-spacing:.06em}
+.tl-item h4{font-size:15.5px;color:var(--navy);margin:1px 0 4px}
+.tl-item .body{font-size:13.5px;color:var(--mut)}
+.tl-item .body .out{display:block;margin-top:3px;font-size:12.5px}
+
+/* 驗收清單 */
+.chk{list-style:none;margin:10px 0}
+.chk li{position:relative;padding:6px 0 6px 30px;border-bottom:1px dashed var(--line);font-size:14.5px}
+.chk li::before{content:"";position:absolute;left:0;top:11px;width:16px;height:16px;border:1.5px solid var(--navy);border-radius:4px}
+
+/* Footer */
+footer{background:var(--navy);color:#cfd3ff;padding:26px 20px}
+footer .in{max-width:1120px;margin:0 auto;font-size:13px;display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between}
+footer b{color:#fff}
+/* 回到頂部 */
+#totop{position:fixed;right:18px;bottom:18px;width:44px;height:44px;border:0;border-radius:8px;background:var(--navy);color:#fff;font-size:18px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:opacity .2s}
+#totop.show{opacity:1;pointer-events:auto}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:10px 0 6px;border-radius:6px}
+.tw .tbl{margin:0}
+@media(max-width:859px){.tw .tbl{min-width:540px}}
+
+</style>
+</head>
+<body>
+
+<!-- ===== Hero ===== -->
+<div class="hero">
+  <div class="in">
+    <span class="eyebrow">PROJECT PLAN · v1.0 · 2026-10-24</span>
+    <h1>銥晟科技 官方網站暨後台管理系統<br>建置規劃書</h1>
+    <p>以現有 Artifact 的架構與設計元素為基礎，建置可正式營運的官方網站，內建後台管理系統——品牌資料、產品分類、產品項目、服務、消息與頁面內容，全部可在後台新增、編輯、刪除。</p>
+    <div class="meta">
+      <span>文件：銥晟科技網站建置規劃書 v1.0</span>
+      <span>版本：2026-10-24</span>
+      <span>根目錄：銥晟科技\</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 關鍵數據 ===== -->
+<div class="statbar">
+  <div class="in">
+    <div class="stat"><b>7<small> 群組</small></b><span>產品大類</span></div>
+    <div class="stat"><b>94<small> 分類</small></b><span>含 Fab／Assembly 分組</span></div>
+    <div class="stat"><b>55<small> 產品</small></b><span>型號＋品牌＋說明</span></div>
+    <div class="stat"><b>4<small> 服務</small></b><span>中古設備至客製化</span></div>
+    <div class="stat"><b>2–3<small> 週</small></b><span>6 階段建置時程</span></div>
+    <div class="stat"><b>11<small> 資料表</small></b><span>關聯式資料庫</span></div>
+  </div>
+</div>
+
+<div class="layout">
+  <!-- ===== 章節導覽 ===== -->
+  <nav class="toc" id="toc" aria-label="章節導覽">
+    <div class="ttl">章節導覽</div>
+    <a href="#s1"><span class="n">01</span>專案概述</a>
+    <a href="#s2"><span class="n">02</span>現有素材盤點</a>
+    <a href="#s3"><span class="n">03</span>目標架構</a>
+    <a href="#s4"><span class="n">04</span>前台功能規格</a>
+    <a href="#s5"><span class="n">05</span>後台管理規格</a>
+    <a href="#s6"><span class="n">06</span>資料模型設計</a>
+    <a href="#s7"><span class="n">07</span>API 設計明細</a>
+    <a href="#s8"><span class="n">08</span>運用技術明細</a>
+    <a href="#s9"><span class="n">09</span>硬體與系統需求</a>
+    <a href="#s10"><span class="n">10</span>建置階段與時程</a>
+    <a href="#s11"><span class="n">11</span>風險與待辦</a>
+    <a href="#s12"><span class="n">12</span>驗收標準</a>
+  </nav>
+
+  <main>
+    <!-- 手機章節跳轉 -->
+    <div class="mnav">
+      <select id="jump" aria-label="章節跳轉">
+        <option value="">選擇章節…</option>
+        <option value="#s1">01 專案概述</option>
+        <option value="#s2">02 現有素材盤點</option>
+        <option value="#s3">03 目標架構</option>
+        <option value="#s4">04 前台功能規格</option>
+        <option value="#s5">05 後台管理規格</option>
+        <option value="#s6">06 資料模型設計</option>
+        <option value="#s7">07 API 設計明細</option>
+        <option value="#s8">08 運用技術明細</option>
+        <option value="#s9">09 硬體與系統需求</option>
+        <option value="#s10">10 建置階段與時程</option>
+        <option value="#s11">11 風險與待辦</option>
+        <option value="#s12">12 驗收標準</option>
+      </select>
+    </div>
+
+    <!-- ===== 01 專案概述 ===== -->
+    <section class="sec" id="s1">
+      <div class="sec-head"><span class="no">01</span><h2>專案概述</h2></div>
+      <h3>專案目標</h3>
+      <p class="lead">以現有 Claude Artifact 的<b>架構與設計元素為基礎</b>，建置一套可正式營運的銥晟科技官方網站，並內建<b>後台管理系統（CMS）</b>。</p>
+      <p>所有頁面資料——品牌資料、首頁橫幅、產品分類、產品項目、服務項目、最新消息、頁面內容——皆可在後台<b>新增、編輯、刪除</b>，不需修改程式碼即可維護網站內容。</p>
+      <h3>與現有 Artifact 的差異</h3>
+      <div class="tw"><table class="tbl t-c1">
+        <colgroup><col style="width:22%"><col style="width:39%"><col style="width:39%"></colgroup>
+        <tr><th>項目</th><th>現有 Artifact</th><th>目標系統</th></tr>
+        <tr><td>前台頁面</td><td>單頁應用（HTML／JS）</td><td>保留原架構與設計，正式上線</td></tr>
+        <tr><td>資料儲存</td><td>Firestore（依賴 Claude 環境）</td><td>自有資料庫（SQLite → 可升 PostgreSQL）</td></tr>
+        <tr><td>管理功能</td><td>管理員模式（僅 Claude 內可用）</td><td>獨立後台，需登入，頁面資料可 CRUD</td></tr>
+        <tr><td>消息內容</td><td>3 則範例佔位</td><td>後台可新增編輯，填入真實內容</td></tr>
+        <tr><td>LINE 連結</td><td>未設定</td><td>後台可設定</td></tr>
+        <tr><td>部署</td><td>不可獨立部署</td><td>Ubuntu + Nginx，正式網域上線</td></tr>
+      </table></div>
+      <h3>系統定位</h3>
+      <p>小型企業形象＋產品目錄型網站。前台公開瀏覽、後台僅管理員可存取。初期單一管理員即可，保留多帳號擴充能力。</p>
+    </section>
+
+    <!-- ===== 02 現有素材盤點 ===== -->
+    <section class="sec" id="s2">
+      <div class="sec-head"><span class="no">02</span><h2>現有素材盤點（已抓取完成）</h2></div>
+      <p class="lead">已於 2026-10-24 完整讀取 Artifact 並逐項統計（可複核）。</p>
+      <h3>內容資料統計</h3>
+      <div class="tw"><table class="tbl t-c2">
+        <colgroup><col style="width:16%"><col style="width:10%"><col style="width:74%"></colgroup>
+        <tr><th>資料集合</th><th>數量</th><th>內容摘要</th></tr>
+        <tr><td>品牌資料 brand</td><td class="num">9 欄位</td><td>中／英名、標語、電話 0984-398-066、Email、地址、營業時間、頂欄文字、LINE（未設定）</td></tr>
+        <tr><td>首頁橫幅 hero</td><td class="num">4 欄位</td><td>英文大字、副標、中文標題「打破限制，交給銥晟科技的全方位設備支援」、說明</td></tr>
+        <tr><td>產品群組 groups</td><td class="num">7 群組</td><td>半導體設備銷售(1)、專業維修項目(5)、人機介面(16)、面板(7)、維修服務(11)、銷售產品(17)、電路板維修服務-依品牌(37)</td></tr>
+        <tr><td>產品分類 cats</td><td class="num">94 分類</td><td>含大項分組：Fab(12)、Assembly(24)、Other(1)</td></tr>
+        <tr><td>產品／維修項目 items</td><td class="num">55 筆</td><td>型號＋品牌＋說明；中古機 u×4、維修項目 i×5、銷售品 y×8、零件 s×14、維修零件 m×24</td></tr>
+        <tr><td>服務項目 services</td><td class="num">4 項</td><td>中古設備、零件備品、電路板維修、客製化委託（NDA）</td></tr>
+        <tr><td>最新消息 posts</td><td class="num">3 則</td><td><span class="tag warn">待替換</span>皆為範例文字，需填入真實內容</td></tr>
+        <tr><td>資訊頁面 pages</td><td class="num">3 頁</td><td>關於銥晟科技、服務優勢、洽詢報價</td></tr>
+      </table></div>
+      <h3>設計系統與資產（須完整保留）</h3>
+      <ul class="plain">
+        <li><b>色彩</b>：navy <code>#2b2a7a</code>（主）、acc <code>#0a84d6</code>（強調）、gold <code>#c9a24b</code>（金線）、hero 漸層 <code>#1b1f6b → #0a6fc0</code>、LINE 綠 <code>#06c755</code>；含深色模式與第二色板</li>
+        <li><b>字型</b>：Noto Sans TC（正體中文）＋ IBM Plex Mono（型號／編號）</li>
+        <li><b>LOGO</b>：SVG「銥」字意象（navy／acc／gold 三色，已提取原始碼）</li>
+        <li><b>背景影片</b>：intro.mp4（634KB，hero 16:5 自動循環播放）</li>
+        <li><b>導覽模式</b>：頂部導覽列＋下拉選單</li>
+      </ul>
+    </section>
+
+    <!-- ===== 03 目標架構 ===== -->
+    <section class="sec" id="s3">
+      <div class="sec-head"><span class="no">03</span><h2>目標架構</h2></div>
+      <div class="arch" aria-label="系統架構圖">
+        <div class="node"><b>使用者瀏覽器</b><span>前台（公開）／ 後台（需登入）</span></div>
+        <div class="arr">↓ HTTPS 443</div>
+        <div class="node ng"><b>Nginx</b><span>反向代理 · SSL 終止 · 靜態快取</span></div>
+        <div class="arr">↓</div>
+        <div class="node"><b>Node.js 應用伺服器</b><span>Express ／ API 層：前台資料聚合（公開）＋ 後台管理（需 JWT 認證）</span></div>
+        <div class="arr">↓</div>
+        <div class="node db"><b>SQLite（單檔）</b><span>可升級 PostgreSQL · users／brand／hero／groups／categories／items／services／posts／pages／activity_log</span></div>
+      </div>
+      <p class="note">前台公開資料與後台管理 API 分層，後台一律需登入認證後才可存取。</p>
+    </section>
+
+    <!-- ===== 04 前台功能規格 ===== -->
+    <section class="sec" id="s4">
+      <div class="sec-head"><span class="no">04</span><h2>前台網站功能規格（保留原 Artifact 架構）</h2></div>
+      <h3>頁面清單</h3>
+      <div class="tw"><table class="tbl t-c3">
+        <colgroup><col style="width:30%"><col style="width:24%"><col style="width:46%"></colgroup>
+        <tr><th>頁面</th><th>網址</th><th>內容來源（後台管理）</th></tr>
+        <tr><td>首頁</td><td><code>/</code></td><td>hero、品牌、服務卡、產品群組卡、最新 5 則消息、背景影片</td></tr>
+        <tr><td>產品群組頁</td><td><code>/group/:id</code></td><td>群組＋分類樹（含 Fab／Assembly 大項分組）＋產品列表</td></tr>
+        <tr><td>產品搜尋</td><td><code>/search?q=</code></td><td>依型號／品牌／說明關鍵字＋分類篩選</td></tr>
+        <tr><td>最新消息</td><td><code>/posts</code></td><td>消息列表（日期／標題／內文，折疊展開）</td></tr>
+        <tr><td>關於我們</td><td><code>/page/philosophy</code></td><td>頁面內容</td></tr>
+        <tr><td>服務優勢</td><td><code>/page/about</code></td><td>頁面內容</td></tr>
+        <tr><td>技術支援（洽詢報價）</td><td><code>/page/support</code></td><td>頁面內容＋電話／Email／LINE</td></tr>
+        <tr><td>聯絡我們</td><td><code>/contact</code></td><td>品牌聯絡資料</td></tr>
+      </table></div>
+      <h3>前台固定元素（沿用原設計）</h3>
+      <ul class="plain">
+        <li>頂欄：電話／Email／頂欄文字（可後台編輯）</li>
+        <li>導覽列：Logo＋「公司介紹 ▾」「產品 ▾」「最新消息」「技術支援」「聯絡我們」</li>
+        <li>側邊欄：公司連結、產品搜尋表單、產品分類樹</li>
+        <li>金線分隔、footer、LINE 浮動按鈕（設定後顯示）、郵件浮動按鈕</li>
+        <li>響應式：桌機 260px 側欄＋主欄；手機單欄（沿用原 media query）</li>
+      </ul>
+    </section>
+
+    <!-- ===== 05 後台管理規格 ===== -->
+    <section class="sec" id="s5">
+      <div class="sec-head"><span class="no">05</span><h2>後台管理系統功能規格（核心需求）</h2></div>
+      <h3>系統管理</h3>
+      <div class="tw"><table class="tbl t-c4">
+        <colgroup><col style="width:18%"><col style="width:82%"></colgroup>
+        <tr><th>功能</th><th>說明</th></tr>
+        <tr><td>管理員登入</td><td>帳號＋密碼登入（bcrypt 雜湊），HTTP-only Cookie Session</td></tr>
+        <tr><td>登出／逾時</td><td>閒置逾時自動登出（建議 30 分鐘）</td></tr>
+        <tr><td>多帳號（二期）</td><td>可新增管理員、分角色（管理員／編輯者）</td></tr>
+      </table></div>
+      <h3>內容管理模組（對應全部前台資料）</h3>
+      <div class="tw"><table class="tbl t-c5">
+        <colgroup><col style="width:24%"><col style="width:38%"><col style="width:38%"></colgroup>
+        <tr><th>模組</th><th>可操作</th><th>對應前台</th></tr>
+        <tr><td>品牌資料</td><td>編輯 9 欄位＋LINE 連結</td><td>頂欄／頁尾／聯絡我們</td></tr>
+        <tr><td>首頁橫幅</td><td>編輯 4 欄位</td><td>首頁 Hero</td></tr>
+        <tr><td>產品與服務說明</td><td>編輯說明文字</td><td>首頁 Products &amp; Service</td></tr>
+        <tr><td>群組管理</td><td>新增／改名／刪除／排序</td><td>產品下拉選單、側欄、首頁卡片</td></tr>
+        <tr><td>分類管理</td><td>新增／改名／刪除／排序、大項分組</td><td>側欄分類樹、分類頁</td></tr>
+        <tr><td>產品管理</td><td>新增／編輯／刪除／排序、型號／品牌／說明</td><td>產品列表、搜尋</td></tr>
+        <tr><td>服務項目</td><td>新增／編輯／刪除、編號／標題／說明</td><td>首頁服務卡</td></tr>
+        <tr><td>最新消息</td><td>新增／編輯／刪除、日期／標題／內文、發布狀態</td><td>最新消息</td></tr>
+        <tr><td>頁面內容</td><td>編輯標題／內文（philosophy／about／support）</td><td>三個資訊頁</td></tr>
+        <tr><td>操作紀錄</td><td>記錄何人何時做了何操作</td><td>稽核用</td></tr>
+      </table></div>
+      <h3>後台介面建議</h3>
+      <ul class="plain">
+        <li>登入後進入<b>儀表板</b>：顯示產品數、分類數、群組數、消息數等統計</li>
+        <li>左側功能選單：儀表板／品牌資料／首頁橫幅／產品管理（群組→分類→產品）／服務項目／最新消息／頁面內容／操作紀錄</li>
+        <li>列表頁：表格＋搜尋＋新增按鈕＋排序</li>
+        <li>編輯用表單彈窗（沿用原 Artifact 的 modal 互動方式）</li>
+        <li>所有刪除需二次確認</li>
+      </ul>
+    </section>
+
+    <!-- ===== 06 資料模型設計 ===== -->
+    <section class="sec" id="s6">
+      <div class="sec-head"><span class="no">06</span><h2>資料模型設計</h2></div>
+      <p class="lead">對應原 Artifact 的 SEED 結構，轉為關聯式資料庫。</p>
+      <h3>資料表（11 張）</h3>
+      <div class="tw"><table class="tbl t-c6">
+        <colgroup><col style="width:26%"><col style="width:46%"><col style="width:28%"></colgroup>
+        <tr><th>資料表</th><th>主要欄位</th><th>備註</th></tr>
+        <tr><td><code>users</code></td><td>id, username, password_hash, name, role, created_at, last_login</td><td>管理員帳號</td></tr>
+        <tr><td><code>brand</code></td><td>id（單列）, name, en, slogan, phone, email, addr, hours, affil, line</td><td>品牌設定</td></tr>
+        <tr><td><code>hero</code></td><td>id（單列）, eyebrow, sub, title, intro</td><td>首頁橫幅</td></tr>
+        <tr><td><code>prod_intro</code></td><td>id（單列）, text</td><td>產品與服務說明</td></tr>
+        <tr><td><code>groups</code></td><td>id, label, sort_order</td><td>產品群組</td></tr>
+        <tr><td><code>categories</code></td><td>id, group_id（FK）, name, sec, sort_order</td><td>分類（含大項分組）</td></tr>
+        <tr><td><code>items</code></td><td>id, category_id（FK）, model, brand, desc, sort_order</td><td>產品／維修項目</td></tr>
+        <tr><td><code>services</code></td><td>id, no, title, desc, sort_order</td><td>服務項目</td></tr>
+        <tr><td><code>posts</code></td><td>id, date, title, body, published, created_at</td><td>最新消息</td></tr>
+        <tr><td><code>pages</code></td><td>id, key（唯一）, title, body</td><td>資訊頁（philosophy／about／support）</td></tr>
+        <tr><td><code>activity_log</code></td><td>id, user_id, action, target, detail, created_at</td><td>操作紀錄</td></tr>
+      </table></div>
+      <h3>資料遷移</h3>
+      <p>將 Artifact SEED 內 7 群組、94 分類、55 產品、4 服務、3 消息、3 頁面、品牌／hero 資料<b>以初始資料（Seed）匯入</b>資料庫，前台內容零變動即可上線。</p>
+    </section>
+
+    <!-- ===== 07 API 設計明細 ===== -->
+    <section class="sec" id="s7">
+      <div class="sec-head"><span class="no">07</span><h2>API 設計明細</h2></div>
+      <h3>公開 API（前台）</h3>
+      <div class="tw"><table class="tbl t-c7">
+        <colgroup><col style="width:14%"><col style="width:30%"><col style="width:56%"></colgroup>
+        <tr><th>方法</th><th>路徑</th><th>用途</th></tr>
+        <tr><td>GET</td><td><code>/api/site</code></td><td>聚合回傳前台所需全部資料（品牌／hero／群組／分類／產品／服務／消息／頁面）</td></tr>
+        <tr><td>GET</td><td><code>/api/posts</code></td><td>最新消息列表（僅已發布）</td></tr>
+      </table></div>
+      <h3>後台 API（需登入）</h3>
+      <div class="tw"><table class="tbl t-c7">
+        <colgroup><col style="width:14%"><col style="width:34%"><col style="width:52%"></colgroup>
+        <tr><th>方法</th><th>路徑</th><th>用途</th></tr>
+        <tr><td>POST</td><td><code>/api/auth/login</code></td><td>登入（回傳 Session Cookie）</td></tr>
+        <tr><td>POST</td><td><code>/api/auth/logout</code></td><td>登出</td></tr>
+        <tr><td>GET</td><td><code>/api/me</code></td><td>目前登入者</td></tr>
+        <tr><td>PUT</td><td><code>/api/admin/brand</code></td><td>更新品牌資料</td></tr>
+        <tr><td>PUT</td><td><code>/api/admin/hero</code></td><td>更新首頁橫幅</td></tr>
+        <tr><td>PUT</td><td><code>/api/admin/prod-intro</code></td><td>更新產品與服務說明</td></tr>
+        <tr><td>GET／POST／PUT／DELETE</td><td><code>/api/admin/groups[/:id]</code></td><td>群組 CRUD</td></tr>
+        <tr><td>GET／POST／PUT／DELETE</td><td><code>/api/admin/categories[/:id]</code></td><td>分類 CRUD</td></tr>
+        <tr><td>GET／POST／PUT／DELETE</td><td><code>/api/admin/items[/:id]</code></td><td>產品 CRUD</td></tr>
+        <tr><td>GET／POST／PUT／DELETE</td><td><code>/api/admin/services[/:id]</code></td><td>服務 CRUD</td></tr>
+        <tr><td>GET／POST／PUT／DELETE</td><td><code>/api/admin/posts[/:id]</code></td><td>消息 CRUD</td></tr>
+        <tr><td>PUT</td><td><code>/api/admin/pages/:key</code></td><td>頁面內容更新</td></tr>
+        <tr><td>GET</td><td><code>/api/admin/activity-log</code></td><td>操作紀錄查詢</td></tr>
+      </table></div>
+      <h3>資安要求</h3>
+      <ul class="plain">
+        <li>密碼一律 bcrypt 雜湊，不存明文</li>
+        <li>後台所有 API 驗證 Session，未登入回傳 401</li>
+        <li>表單輸入做 XSS 跳脫與 SQL 參數化</li>
+        <li>Nginx 層：限速、隱藏版本、HTTPS 強制跳轉</li>
+      </ul>
+    </section>
+
+    <!-- ===== 08 運用技術明細 ===== -->
+    <section class="sec" id="s8">
+      <div class="sec-head"><span class="no">08</span><h2>運用技術明細（技術棧）</h2></div>
+      <h3>建議技術棧</h3>
+      <div class="tw"><table class="tbl t-c8">
+        <colgroup><col style="width:20%"><col style="width:26%"><col style="width:20%"><col style="width:34%"></colgroup>
+        <tr><th>層</th><th>選用</th><th>版本</th><th>理由</th></tr>
+        <tr><td>前端框架</td><td>Preact（或原生 JS 保留原 render 邏輯）</td><td>Preact 10.x</td><td>輕量、符合既有偏好；原 Artifact 設計可直接移植</td></tr>
+        <tr><td>前端樣式</td><td>沿用原 Artifact CSS 變數與版面</td><td>—</td><td>保真還原設計系統</td></tr>
+        <tr><td>後端</td><td>Node.js ＋ Express</td><td>Node 20 LTS、Express 4.x</td><td>輕量、維護簡單，適合小型官網</td></tr>
+        <tr><td>資料庫</td><td>SQLite（初期）</td><td>better-sqlite3</td><td>零維護、單檔備份、無需安裝 DB 伺服器</td></tr>
+        <tr><td>資料庫升級</td><td>PostgreSQL（流量成長後）</td><td>PostgreSQL 16</td><td>既有專案熟悉，可平滑遷移</td></tr>
+        <tr><td>認證</td><td>bcrypt ＋ HTTP-only Cookie Session</td><td>bcryptjs</td><td>CSRF 依賴複雜度低</td></tr>
+        <tr><td>前端建置</td><td>Vite（Preact 版）</td><td>Vite 5.x</td><td>快速建置、產出靜態檔案</td></tr>
+        <tr><td>部署</td><td>Ubuntu ＋ Nginx ＋ PM2</td><td>Ubuntu 22.04 LTS</td><td>符合既有主機維運習慣</td></tr>
+        <tr><td>SSL</td><td>Let's Encrypt（certbot）</td><td>最新</td><td>免費自動續期</td></tr>
+        <tr><td>版本控制</td><td>Git（GitHub 私有倉庫）</td><td>—</td><td>變更留紀錄、可回溯</td></tr>
+        <tr><td>監控</td><td>PM2 monit ＋ logrotate</td><td>—</td><td>進程守護與日誌輪替</td></tr>
+      </table></div>
+      <h3>備選方案（說明取捨）</h3>
+      <div class="tw"><table class="tbl t-c8">
+        <colgroup><col style="width:20%"><col style="width:40%"><col style="width:40%"></colgroup>
+        <tr><th>方案</th><th>說明</th><th>取捨</th></tr>
+        <tr><td>Next.js 全棧</td><td>前台＋API＋後台同一框架</td><td>未來要 SSR／SEO 深化可採用；初期 Express 更輕</td></tr>
+        <tr><td>Supabase</td><td>雲端 PostgreSQL＋Auth＋後台</td><td>省自建後端，但資料在雲端、需月費；初期自建 SQLite 更單純</td></tr>
+        <tr><td>n8n 自動化</td><td>消息定期排程、備份通知</td><td>二期選配，不納入初期</td></tr>
+      </table></div>
+      <h3>開發工具</h3>
+      <p>VS Code、Git（GitHub 私有倉庫）、Node.js 20 LTS（本機開發）；瀏覽器驗證 Edge／Chrome DevTools（響應式檢查）。</p>
+    </section>
+
+    <!-- ===== 09 硬體與系統需求 ===== -->
+    <section class="sec" id="s9">
+      <div class="sec-head"><span class="no">09</span><h2>硬體與系統需求（日後架構）</h2></div>
+      <h3>開發環境（現階段）</h3>
+      <div class="tw"><table class="tbl t-c8">
+        <colgroup><col style="width:20%"><col style="width:80%"></colgroup>
+        <tr><th>項目</th><th>需求</th></tr>
+        <tr><td>作業系統</td><td>Windows 10／11（本機開發）</td></tr>
+        <tr><td>處理器／記憶體</td><td>現有開發機即可（建議 8GB RAM 以上）</td></tr>
+        <tr><td>軟體</td><td>Node.js 20 LTS、Git、VS Code</td></tr>
+        <tr><td>儲存</td><td>專案依統一資料夾結構存放（程式／文件／安裝程式／備份／副本／系統畫面）</td></tr>
+      </table></div>
+      <h3>正式主機需求（VPS，建議規格）</h3>
+      <p class="lead">依小型企業官網估算：日訪客 &lt; 1,000、月流量 &lt; 50GB 的規模。</p>
+      <div class="tw"><table class="tbl t-c8">
+        <colgroup><col style="width:20%"><col style="width:24%"><col style="width:28%"><col style="width:28%"></colgroup>
+        <tr><th>項目</th><th>初期建議（可上線）</th><th>建議規格（含餘裕）</th><th>備註</th></tr>
+        <tr><td>vCPU</td><td class="num">1 核</td><td class="num">2 核</td><td>Node.js 單體足夠</td></tr>
+        <tr><td>記憶體</td><td class="num">2 GB</td><td class="num">4 GB</td><td>含 PM2＋Nginx＋DB</td></tr>
+        <tr><td>儲存</td><td class="num">40 GB SSD</td><td class="num">60 GB SSD</td><td>含系統＋DB＋備份空間</td></tr>
+        <tr><td>網路</td><td colspan="2" class="num">1 Gbps、固定 IP</td><td>需固定 IP 綁定 DNS</td></tr>
+        <tr><td>作業系統</td><td colspan="2">Ubuntu 22.04 LTS</td><td>長期支援至 2032</td></tr>
+        <tr><td>月租費參考</td><td class="num">約 NT$300–500</td><td class="num">約 NT$600–1,000</td><td>台灣機房或海外 VPS 視供應商</td></tr>
+      </table></div>
+      <h3>軟體套件清單（正式機）</h3>
+      <p><span class="tag">Nginx</span><span class="tag">Node.js 20 LTS</span><span class="tag">PM2</span><span class="tag">SQLite</span><span class="tag">certbot</span><span class="tag">UFW</span><span class="tag">fail2ban</span><span class="tag">logrotate</span><span class="tag">Git</span></p>
+      <h3>備份策略（硬規則）</h3>
+      <div class="tw"><table class="tbl t-c8">
+        <colgroup><col style="width:20%"><col style="width:40%"><col style="width:40%"></colgroup>
+        <tr><th>頻率</th><th>內容</th><th>方式</th></tr>
+        <tr><td>每日</td><td>SQLite 資料庫檔</td><td>cron 定時備份至「備份／」，保留最近 7 日</td></tr>
+        <tr><td>每週</td><td>資料庫＋程式碼＋上傳資產</td><td>壓縮後異地保存（GitHub 私有倉庫＋本機）</td></tr>
+        <tr><td>每次變更</td><td>git commit ＋ 系統建置紀錄.md 更新</td><td>專案硬規則</td></tr>
+      </table></div>
+      <h3>擴充路徑（未來）</h3>
+      <ul class="plain">
+        <li>流量成長：CDN（Cloudflare）＋ Nginx 快取</li>
+        <li>資料庫升級：SQLite → PostgreSQL 16（遷移腳本保留）</li>
+        <li>產品圖片：新增圖片上傳模組（物件儲存或本機 uploads／），二期規劃</li>
+        <li>多語言：英語／越南語版本（既有 i18n 經驗），二期規劃</li>
+      </ul>
+    </section>
+
+    <!-- ===== 10 建置階段與時程 ===== -->
+    <section class="sec" id="s10">
+      <div class="sec-head"><span class="no">10</span><h2>建置階段與時程（建議）</h2></div>
+      <p class="lead">總計約 2–3 週（不含內容素材收集時間），6 個階段依序進行。</p>
+      <div class="tl">
+        <div class="tl-item"><div class="st">階段 0 · 0.5 日</div><h4>環境建置</h4><div class="body">Node.js 初始化、Git 倉庫、專案結構<span class="out">產出：專案骨架</span></div></div>
+        <div class="tl-item"><div class="st">階段 1 · 2–3 日</div><h4>資料庫與 API</h4><div class="body">資料表、Seed 匯入、公開／後台 API<span class="out">產出：DB＋API</span></div></div>
+        <div class="tl-item"><div class="st">階段 2 · 2–3 日</div><h4>前台移植</h4><div class="body">沿用原 Artifact 設計移植全部頁面<span class="out">產出：前台完整頁面</span></div></div>
+        <div class="tl-item"><div class="st">階段 3 · 3–4 日</div><h4>後台管理</h4><div class="body">登入、各內容模組 CRUD、儀表板<span class="out">產出：後台可用</span></div></div>
+        <div class="tl-item"><div class="st">階段 4 · 待素材</div><h4>內容填入</h4><div class="body">真實消息、LINE 連結、確認品牌資料<span class="out">產出：上線內容（需用戶提供素材）</span></div></div>
+        <div class="tl-item"><div class="st">階段 5 · 1–2 日</div><h4>部署上線</h4><div class="body">VPS、Nginx、SSL、PM2、備份 cron<span class="out">產出：正式網址上線</span></div></div>
+        <div class="tl-item"><div class="st">階段 6 · 1 日</div><h4>驗收與移交</h4><div class="body">全頁面驗證、操作教學、交接文件<span class="out">產出：驗收單</span></div></div>
+      </div>
+    </section>
+
+    <!-- ===== 11 風險與待辦 ===== -->
+    <section class="sec" id="s11">
+      <div class="sec-head"><span class="no">11</span><h2>風險與待辦事項</h2></div>
+      <div class="tw"><table class="tbl t-c8">
+        <colgroup><col style="width:34%"><col style="width:14%"><col style="width:24%"><col style="width:28%"></colgroup>
+        <tr><th>項目</th><th>狀態</th><th>影響</th><th>處理</th></tr>
+        <tr><td>3 則最新消息為範例</td><td><span class="tag warn">待提供</span></td><td>上線前需真實內容</td><td>後台建好後由管理員填入</td></tr>
+        <tr><td>LINE 加好友連結未設定</td><td><span class="tag warn">待提供</span></td><td>前台 LINE 按鈕不顯示</td><td>需客戶提供 line.me／lin.ee 連結</td></tr>
+        <tr><td>產品無照片</td><td><span class="tag warn">待評估</span></td><td>產品列表純文字</td><td>二期規劃圖片上傳</td></tr>
+        <tr><td>原 Artifact 的 Firestore 依賴</td><td><span class="tag">已確認</span></td><td>需移除並改用自有 DB</td><td>規劃書架構已排除</td></tr>
+        <tr><td>域名</td><td><span class="tag warn">待確認</span></td><td>正式網址</td><td>需客戶提供或代購</td></tr>
+        <tr><td>主機</td><td><span class="tag warn">待確認</span></td><td>部署目標</td><td>依第 9 節規格採購</td></tr>
+      </table></div>
+    </section>
+
+    <!-- ===== 12 驗收標準 ===== -->
+    <section class="sec" id="s12">
+      <div class="sec-head"><span class="no">12</span><h2>驗收標準</h2></div>
+      <ol class="chk">
+        <li>前台全頁面可正常瀏覽，設計與原 Artifact 一致（色彩／字型／LOGO／影片／導覽）</li>
+        <li>後台登入後，品牌、hero、群組、分類、產品、服務、消息、頁面內容均可新增／編輯／刪除並即時反映至前台</li>
+        <li>後台未登入無法存取任何管理 API</li>
+        <li>搜尋功能（型號／品牌／說明關鍵字＋分類）運作正常</li>
+        <li>消息列表依日期排序、可折疊展開</li>
+        <li>手機（窄螢幕）版面正確</li>
+        <li>每日備份與操作紀錄正常運作</li>
+        <li>部署於正式 VPS，HTTPS 正常，符合第 9 節硬體／系統需求</li>
+      </ol>
+    </section>
+  </main>
+</div>
+
+<footer>
+  <div class="in">
+    <div><b>銥晟科技 官方網站暨後台管理系統 建置規劃書 v1.0</b></div>
+    <div>製作：輔凰有限公司｜2026-10-24｜系統變更與進度記錄於「文件／系統建置紀錄.md」</div>
+  </div>
+</footer>
+
+<button id="totop" aria-label="回到頂部">↑</button>
+
+<script>
+(function(){
+  'use strict';
+  // 手機章節跳轉
+  var jump=document.getElementById('jump');
+  if(jump){jump.addEventListener('change',function(){if(this.value){location.hash=this.value;this.value='';}});}
+  // 導覽 active 狀態 + 回到頂部
+  var toc=document.getElementById('toc');
+  var links=toc?toc.querySelectorAll('a'):[];
+  var totop=document.getElementById('totop');
+  var sections=Array.prototype.map.call(document.querySelectorAll('section.sec'),function(s){return s;});
+  function onScroll(){
+    var y=window.scrollY||document.documentElement.scrollTop;
+    if(totop){totop.classList.toggle('show',y>600);}
+    if(!links.length||!sections.length)return;
+    var idx=0;
+    for(var i=0;i<sections.length;i++){
+      if(sections[i].getBoundingClientRect().top<=90){idx=i;}
+    }
+    for(var j=0;j<links.length;j++){links[j].classList.toggle('on',j===idx);}
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});
+  onScroll();
+  if(totop){totop.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});}
+})();
+</script>
+</body>
+</html>
