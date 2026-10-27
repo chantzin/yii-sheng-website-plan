@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>銥晟科技官網　網站布局重新編排建議報告</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Crect x='4' y='4' width='112' height='112' rx='26' fill='%232b2a7a'/%3E%3Cpolygon points='120,0 120,120 0,120' fill='%230a84d6' fill-opacity='.45'/%3E%3Cpath d='M20 26 L44 56 L68 26 M44 56 V94' fill='none' stroke='%23fff' stroke-width='11'/%3E%3Cpath d='M100 44 H78 V62 H100 V80 H76' fill='none' stroke='%23fff' stroke-opacity='.85' stroke-width='8'/%3E%3Ccircle cx='100' cy='44' r='6' fill='%23c9a24b'/%3E%3Ccircle cx='76' cy='80' r='6' fill='%23c9a24b'/%3E%3C/svg%3E">
+<style>
+:root{--navy:#2b2a7a;--navy2:#1b1f6b;--acc:#0a84d6;--gold:#c9a24b;--gold2:#f3e6c0;--bg:#f5f6fa;--card:#fff;--fg:#22243a;--mut:#6a6e86;--line:#dfe2ee;--danger:#b3261e;--dgbg:#fdf0ee;--ok:#1e7f4f}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.75 "Noto Sans TC","Microsoft JhengHei","PingFang TC",system-ui,sans-serif}
+.hero{position:relative;overflow:hidden;color:#fff;background:linear-gradient(120deg,var(--navy2),var(--acc));padding:56px 20px 48px}
+.hero::before{content:"";position:absolute;inset:0;opacity:.14;background-image:linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px);background-size:34px 34px}
+.hero svg.tr{position:absolute;right:18px;bottom:0;width:340px;height:150px;opacity:.5;pointer-events:none}
+.wrap{max-width:1080px;margin:0 auto;position:relative}
+.hero .eyebrow{display:inline-block;border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:3px 14px;font-size:12.5px;letter-spacing:.18em;margin-bottom:14px}
+.hero h1{font-size:clamp(26px,4.2vw,40px);line-height:1.3;margin:0 0 10px;font-weight:800}
+.hero p{max-width:760px;margin:0;opacity:.94}
+.hero .meta{margin-top:22px;display:flex;flex-wrap:wrap;gap:8px 26px;font-size:13px;color:var(--gold2)}
+.hero .meta b{color:#fff;font-weight:700}
+nav.toc{position:sticky;top:0;z-index:20;background:var(--navy);color:#fff;box-shadow:0 2px 10px rgba(0,0,0,.18)}
+nav.toc .wrap{display:flex;gap:4px;overflow-x:auto;padding:8px 0;scrollbar-width:thin}
+nav.toc a{color:#e8ecff;text-decoration:none;font-size:13.5px;white-space:nowrap;padding:5px 12px;border-radius:999px;font-weight:600}
+nav.toc a:hover{background:rgba(255,255,255,.14);color:#fff}
+main{padding:36px 20px 60px}
+section{scroll-margin-top:64px}
+.sec{max-width:1080px;margin:0 auto 14px}
+h2.sec-t{display:flex;align-items:baseline;gap:12px;font-size:clamp(22px,3vw,28px);font-weight:800;color:var(--navy);margin:0 0 6px}
+h2.sec-t .no{color:var(--gold);font-weight:800;font-size:.85em}
+.lead{color:var(--mut);margin:0 0 22px;max-width:820px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin-bottom:16px}
+.card h3{font-size:17px;color:var(--navy);margin:0 0 10px}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:14px}
+th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}
+th{background:var(--navy);color:#fff;font-weight:600;font-size:13.5px;white-space:nowrap}
+tr:nth-child(even) td{background:#f7f9fd}
+.tw{overflow-x:auto}
+.gap{background:#fdf6e7;border:1px solid #e8cf9e;border-radius:12px;padding:14px 18px;margin:14px 0;font-size:14px}
+.gap b.t{color:var(--danger)}
+ul.clean{margin:8px 0 0;padding-left:22px}
+ul.clean li{margin:4px 0}
+.pill{display:inline-block;padding:2px 10px;border-radius:999px;font-size:12px;font-weight:700;vertical-align:middle}
+.pill.ok{background:#e5f5ec;color:var(--ok)}
+.pill.warn{background:#fdeaea;color:var(--danger)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.fc{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.fc b{color:var(--navy);display:block;margin-bottom:6px}
+.steps{list-style:none;margin:0;padding:0;position:relative}
+.steps::before{content:"";position:absolute;left:15px;top:10px;bottom:10px;width:2px;background:var(--line)}
+.steps li{position:relative;padding:0 0 14px 46px;margin:0}
+.steps li .n{position:absolute;left:0;top:1px;width:32px;height:32px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;z-index:1}
+.steps li .n.new{background:var(--acc)}
+.steps li .n.keep{background:var(--gold)}
+.steps li b.t{color:var(--navy)}
+.steps li .tag{display:inline-block;font-size:11px;font-weight:800;border-radius:999px;padding:1px 8px;margin-left:6px;vertical-align:2px}
+.tag.new{background:var(--acc);color:#fff}
+.tag.keep{background:var(--gold2);color:#7a5c1c}
+.steps li .d{color:var(--mut);font-size:13.5px;margin-top:2px}
+.chartbox{height:300px}
+.phase{border-top:5px solid var(--acc);border-radius:12px;background:var(--card);border-left:1px solid var(--line);border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:18px 20px}
+.phase.p0{border-top-color:var(--danger)}
+.phase.p1{border-top-color:var(--gold)}
+.phase.p2{border-top-color:var(--acc)}
+.phase h3{margin:0 0 6px;font-size:16px}
+.phase .tm{font-size:12.5px;color:var(--mut);margin-bottom:10px}
+.phase ul{margin:0;padding-left:20px;font-size:14px}
+.phase li{margin:4px 0}
+footer{background:var(--navy);color:#cdd3f5;padding:26px 20px;font-size:13px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:8px 30px;justify-content:space-between;align-items:center}
+@media(max-width:900px){.grid2,.grid3,.grid4{grid-template-columns:1fr}}
+@media(max-width:560px){.hero{padding:40px 16px 36px}.hero svg.tr{display:none}}
+@media print{nav.toc{display:none}.hero{padding:30px 0}body{font-size:12px}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="wrap">
+    <svg class="tr" viewBox="0 0 340 150" preserveAspectRatio="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,120 L60,120 L90,80 L170,80 L200,35 L300,35" fill="none" stroke="#9fd4ff" stroke-width="2"/>
+      <path d="M0,60 L70,60 L100,110 L180,110 L215,70 L340,70" fill="none" stroke="#9fd4ff" stroke-opacity=".6" stroke-width="1.5"/>
+      <circle cx="60" cy="120" r="3.5" fill="#ffd76a"/><circle cx="90" cy="80" r="3.5" fill="#ffd76a"/>
+      <circle cx="170" cy="80" r="3.5" fill="#ffd76a"/><circle cx="200" cy="35" r="3.5" fill="#ffd76a"/>
+      <circle cx="70" cy="60" r="3.5" fill="#9fd4ff"/><circle cx="100" cy="110" r="3.5" fill="#9fd4ff"/>
+      <circle cx="180" cy="110" r="3.5" fill="#9fd4ff"/><circle cx="215" cy="70" r="3.5" fill="#9fd4ff"/>
+    </svg>
+    <div class="eyebrow">RE-DESIGN PROPOSAL</div>
+    <h1>銥晟科技官方網站<br>布局與格式重新編排建議報告</h1>
+    <p>以現行網站所有內容項目為基準，提出資訊架構、頁面布局與格式的完整重整建議。資料取自前台 API 實時數據，可立即對照後台執行。</p>
+    <div class="meta">
+      <span>版次 <b>v1.0</b></span>
+      <span>日期 <b>2026-10-27</b></span>
+      <span>資料基準 <b>7 群組・94 分類・55 產品・4 服務・3 消息・3 頁面</b></span>
+    </div>
+  </div>
+</div>
+
+<nav class="toc"><div class="wrap">
+  <a href="#s1">01 現況盤點</a>
+  <a href="#s2">02 設計原則</a>
+  <a href="#s3">03 布局建議</a>
+  <a href="#s4">04 格式細節</a>
+  <a href="#s5">05 後台對應</a>
+  <a href="#s6">06 分階段實施</a>
+  <a href="#s7">07 附錄清單</a>
+</div></nav>
+
+<main>
+<!-- ===== 第一章 現況盤點 ===== -->
+<section id="s1" class="sec">
+  <h2 class="sec-t"><span class="no">01</span>現況盤點：網站上所有項目一覽</h2>
+  <p class="lead">依前台由上而下順序列出全部區塊與資料量，並標出四項「看起來未完成」的缺口。</p>
+
+  <div class="card">
+    <h3>1.1 首頁區塊（現行順序）</h3>
+    <div class="tw">
+    <table style="table-layout:fixed">
+      <colgroup><col style="width:15%"><col style="width:22%"><col style="width:45%"><col style="width:18%"></colgroup>
+      <tr><th>#</th><th>區塊</th><th>內容項目</th><th>現況</th></tr>
+      <tr><td>1</td><td>跑馬燈 tick</td><td>業務關鍵字輪播（快速檢測・誠信報價｜穩定 可靠 專業 效率｜中古設備買賣…｜Cost Down 最優解）</td><td><span class="pill ok">正常</span></td></tr>
+      <tr><td>2</td><td>頁首橫幅 bnr</td><td>4 卡輪播（設備故障了？／專業維修／快速檢測・誠信報價／公司名）＋電路電流動畫背景</td><td><span class="pill ok">正常</span></td></tr>
+      <tr><td>3</td><td>聯絡列 top</td><td>電話 0984-398-066、Email、業務範圍標語</td><td><span class="pill ok">正常</span></td></tr>
+      <tr><td>4</td><td>導覽列 header</td><td>LOGO＋公司介紹▾／產品▾／最新消息／技術支援／聯絡我們</td><td><span class="pill ok">正常</span></td></tr>
+      <tr><td>5</td><td>主視覺 hero</td><td>eyebrow／sub／title／intro ＋ LOGO 水印</td><td><span class="pill warn">文字空白</span></td></tr>
+      <tr><td>6</td><td>關於我們</td><td>「關於銥晟科技」頁面內容</td><td><span class="pill ok">正常</span></td></tr>
+      <tr><td>7</td><td>產品總覽</td><td>導言＋7 大群組卡片（各含分類標籤）</td><td><span class="pill ok">正常</span></td></tr>
+      <tr><td>8</td><td>服務優勢</td><td>「服務優勢」頁面內容</td><td><span class="pill ok">正常</span></td></tr>
+      <tr><td>9</td><td>服務項目</td><td>4 張服務卡片（中古設備／零件備品／電路板維修／客製化委託）</td><td><span class="pill ok">正常</span></td></tr>
+      <tr><td>10</td><td>最新消息</td><td>3 則消息</td><td><span class="pill warn">皆範例</span></td></tr>
+      <tr><td>11</td><td>聯絡我們</td><td>電話／Email／地址</td><td><span class="pill ok">正常</span></td></tr>
+      <tr><td>12</td><td>頁尾 footer</td><td>LOGO＋電話／Email＋地址＋版權</td><td><span class="pill ok">正常</span></td></tr>
+      <tr><td>13</td><td>浮動按鈕</td><td>客服郵件按鈕（＋LINE 按鈕）</td><td><span class="pill warn">LINE 未設</span></td></tr>
+    </table>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h3>1.2 子頁面（現行）</h3>
+      <ul class="clean">
+        <li><b>產品群組頁（7 頁）</b>：左側分類樹＋右側品項列表</li>
+        <li><b>產品搜尋</b>：搜尋框＋結果列表</li>
+        <li><b>最新消息頁</b>：單一列表</li>
+        <li><b>頁面頁（3 頁）</b>：標題＋正文</li>
+        <li><b>聯絡我們頁</b>：聯絡資訊＋LINE 按鈕（無表單、無地圖）</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>1.3 資料資產分佈</h3>
+      <div class="chartbox" id="chart1"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>1.4 已發現缺口（優先補齊）</h3>
+    <div class="grid4">
+      <div class="gap"><b class="t">① 主視覺空白</b><br>hero 的 eyebrow／sub／title／intro 四欄全空，首屏無文字</div>
+      <div class="gap"><b class="t">② 產品名稱未建</b><br>55 筆產品的 name 欄位全數空白，前台無法顯示型號</div>
+      <div class="gap"><b class="t">③ 消息皆範例</b><br>3 則消息標題含「請改為實際內容」</div>
+      <div class="gap"><b class="t">④ LINE 未設定</b><br>品牌 line 欄位空白，前台 LINE 按鈕不會出現</div>
+    </div>
+    <p style="margin:12px 0 0;font-size:14px;color:var(--mut)"><b>盤點結論</b>：資料骨架完整、94 分類是網站最大資產；補齊四項缺口＋重整布局後，網站即可呈現「專業設備商＋維修商」的完成度。</p>
+  </div>
+</section>
+
+<!-- ===== 第二章 設計原則 ===== -->
+<section id="s2" class="sec">
+  <h2 class="sec-t"><span class="no">02</span>重新編排總則（設計原則）</h2>
+  <p class="lead">五條原則決定所有區塊的順序、密度與視覺，後續每項建議皆由此推導。</p>
+  <div class="grid3">
+    <div class="fc"><b>1. 採購決策導向</b>訪客進站目標是「找得到品項、知道找誰詢價」。每個區塊都服務這條路徑。</div>
+    <div class="fc"><b>2. 雙身分並重</b>同時是「設備銷售商」與「專業維修商」，兩種需求各需清楚入口，不混在一個產品區。</div>
+    <div class="fc"><b>3. 94 分類是資產</b>用品牌字母索引＋熱門置頂＋搜尋降低瀏覽成本，不讓細分類變成負擔。</div>
+    <div class="fc"><b>4. 視覺系統沿用</b>navy／acc／gold、Noto Sans TC、SVG「銥」LOGO、電路科技紋樣，不另起爐灶。</div>
+    <div class="fc"><b>5. 一屏一件事</b>每段高度克制，以 gold 分隔線與留白製造節奏，避免長頁疲勞。</div>
+  </div>
+</section>
+
+<!-- ===== 第三章 布局建議 ===== -->
+<section id="s3" class="sec">
+  <h2 class="sec-t"><span class="no">03</span>頁面布局建議</h2>
+  <p class="lead">核心為首頁 14 段新結構；子頁面則強化查找效率與詢價路徑。</p>
+
+  <div class="card">
+    <h3>3.1 首頁（長頁結構重整）— 建議新順序</h3>
+    <p style="font-size:13.5px;color:var(--mut);margin:0 0 12px">標記說明：<span class="tag keep">KEEP 保留</span>　<span class="tag new">NEW 新增</span>　其餘為調整位置或改版式</p>
+    <ol class="steps">
+      <li><span class="n keep">K</span><b class="t">跑馬燈 tick</b><span class="tag keep">KEEP</span><div class="d">全寬捲動業務關鍵字，維持現行。</div></li>
+      <li><span class="n">2</span><b class="t">導覽列 header（與聯絡列合併）</b><div class="d">電話＋Email 收進 header 右側或改為其下一條極細資訊帶，減少一層視覺噪音。</div></li>
+      <li><span class="n keep">K</span><b class="t">頁首橫幅 bnr</b><span class="tag keep">KEEP</span><div class="d">品牌第一眼的動態主視覺，維持現行 4 卡輪播。</div></li>
+      <li><span class="n">4</span><b class="t">主視覺 hero（補上文字）</b><div class="d">eyebrow「SEMICONDUCTOR EQUIPMENT」／title 口號／intro 一句話定位，加雙 CTA「瀏覽產品」「洽詢維修」。</div></li>
+      <li><span class="n new">5</span><b class="t">信任指標條</b><span class="tag new">NEW</span><div class="d">電話｜現貨供應｜快速檢測｜可簽 NDA，4 格圖標橫條，強化可信度。</div></li>
+      <li><span class="n">6</span><b class="t">關於我們（2 欄精簡）</b><div class="d">左 LOGO＋一句話、右正文節選＋「了解更多」。</div></li>
+      <li><span class="n">7</span><b class="t">四大服務（2×2 大圖卡）</b><div class="d">中古設備／零件備品／電路板維修／客製化委託，圖標＋短文案＋「前往詢價」。</div></li>
+      <li><span class="n">8</span><b class="t">產品總覽（銷售／維修分流）</b><div class="d">7 群組拆兩列：群組 1/3/4/6 屬銷售、2/5/7 屬維修，卡片直接標明屬性。</div></li>
+      <li><span class="n new">9</span><b class="t">熱門維修品牌牆</b><span class="tag new">NEW</span><div class="d">由 94 分類擷取（DISCO／ASM／TEL／AMAT／ACCRETECH…）品牌膠囊牆，點擊直達群組。</div></li>
+      <li><span class="n keep">K</span><b class="t">最新消息</b><span class="tag keep">KEEP</span><div class="d">保留 3 則＋「全部消息」入口。</div></li>
+      <li><span class="n new">11</span><b class="t">聯絡 CTA 滿版帶</b><span class="tag new">NEW</span><div class="d">深藍滿寬帶：電話＋Email＋地址＋LINE 大按鈕一次給足。</div></li>
+      <li><span class="n keep">K</span><b class="t">頁尾 footer</b><span class="tag keep">KEEP</span><div class="d">三欄維持。</div></li>
+    </ol>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h3>3.2 產品／維修目錄頁（群組頁）</h3>
+      <ul class="clean">
+        <li><b>麵包屑</b>：新增「首頁 / 產品 / 群組 / 分類」</li>
+        <li><b>側欄</b>：收合式樹＋「熱門品牌」置頂＋搜尋框嵌入</li>
+        <li><b>結果計數</b>：標題列加「共 N 項」</li>
+        <li><b>品項卡片化</b>：型號＋品牌標籤＋狀態（現貨／詢價）＋「詢價」按鈕</li>
+        <li><b>94 分類索引</b>：品牌首字 A-Z 快跳，每群組預設開熱門 8 個、其餘收合</li>
+        <li><b>空結果</b>：「找不到？直接洽詢」＋電話／Email</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>3.3 最新消息頁</h3>
+      <ul class="clean">
+        <li>改<b>卡片列表</b>：標題＋日期＋摘要前 40 字，點入展開全文</li>
+        <li>補齊真實內容後，規劃「現貨公告／維修案例／公司消息」三種標籤色</li>
+      </ul>
+      <h3 style="margin-top:16px">3.4 頁面頁（關於／服務優勢／洽詢報價）</h3>
+      <ul class="clean">
+        <li>統一版式：眉標＋大標＋正文（max-width 660px）＋結尾 CTA</li>
+        <li>「洽詢報價」擴充為<b>詢價表單雛形</b>：品項、數量、聯絡方式三欄（二期接後台儲存）</li>
+      </ul>
+      <h3 style="margin-top:16px">3.5 聯絡我們頁</h3>
+      <ul class="clean">
+        <li>電話＋Email＋地址＋營業時間 4 格資訊卡</li>
+        <li>嵌入 Google 地圖（苗栗頭份）＋LINE 大按鈕（待設定 line 欄位）</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 第四章 格式細節 ===== -->
+<section id="s4" class="sec">
+  <h2 class="sec-t"><span class="no">04</span>格式細節建議（全域）</h2>
+  <div class="card">
+    <div class="tw">
+    <table style="table-layout:fixed">
+      <colgroup><col style="width:22%"><col style="width:78%"></colgroup>
+      <tr><th>項目</th><th>建議值</th></tr>
+      <tr><td>內容寬度</td><td>維持 1180px（wrap）；跑馬燈／橫幅／聯絡 CTA 滿版區除外</td></tr>
+      <tr><td>字級系統</td><td>主標 28–36px／區塊標題 22–26px／正文 15–16px／輔文 13px</td></tr>
+      <tr><td>標題強調</td><td>維持 gold <span style="color:var(--gold)">#c9a24b</span>，h2 前加細線眉標</td></tr>
+      <tr><td>卡片</td><td>圓角 14px、白底、細邊線、hover 微浮起（shadow 4px）</td></tr>
+      <tr><td>按鈕</td><td>主 CTA＝acc 藍底白字／次 CTA＝描邊；統一 hover 加深</td></tr>
+      <tr><td>區塊節奏</td><td>區塊間距 56–72px；gold 分隔線只在關鍵轉折使用</td></tr>
+      <tr><td>響應式</td><td>斷點 1024／768／640；2×2 卡片→1 欄、品牌牆橫向捲動</td></tr>
+      <tr><td>動態效果</td><td>維持跑馬燈／橫幅動畫；新增區塊僅輕量 hover，不加載入動畫</td></tr>
+      <tr><td>無障礙</td><td>對比度維持、鍵盤可達、reduced-motion 尊重</td></tr>
+    </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 第五章 後台對應 ===== -->
+<section id="s5" class="sec">
+  <h2 class="sec-t"><span class="no">05</span>後台對應調整（補齊缺口優先）</h2>
+  <div class="card">
+    <div class="tw">
+    <table style="table-layout:fixed">
+      <colgroup><col style="width:10%"><col style="width:20%"><col style="width:70%"></colgroup>
+      <tr><th>順位</th><th>後台模組</th><th>動作</th></tr>
+      <tr><td><span class="pill warn">P0</span></td><td>首頁文字（hero）</td><td>補 eyebrow／sub／title／intro 四欄文字</td></tr>
+      <tr><td><span class="pill warn">P0</span></td><td>產品</td><td>補齊 55 筆 items 的 name（型號）欄位</td></tr>
+      <tr><td><span class="pill warn">P0</span></td><td>最新消息</td><td>3 則改為真實內容</td></tr>
+      <tr><td><span class="pill warn">P0</span></td><td>品牌</td><td>設定 LINE 連結（line.me／lin.ee）</td></tr>
+      <tr><td><span class="pill ok">P1</span></td><td>首頁橫幅</td><td>若需換文案，啟用 banner title／sub 欄位（目前寫死前台）</td></tr>
+      <tr><td><span class="pill ok">P1</span></td><td>聯絡我們</td><td>新增 Google 地圖嵌入位（前台）</td></tr>
+      <tr><td><span class="pill ok">P2</span></td><td>洽詢報價</td><td>詢價表單＋後台儲存（需新增 1 張 enquire 表）</td></tr>
+    </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 第六章 分階段 ===== -->
+<section id="s6" class="sec">
+  <h2 class="sec-t"><span class="no">06</span>分階段實施建議</h2>
+  <p class="lead">每階段完成後：更新系統建置紀錄、git 提交、每日備份確認。</p>
+  <div class="grid3">
+    <div class="phase p0">
+      <h3>階段一（P0）</h3>
+      <div class="tm">約半日，不改布局</div>
+      <ul>
+        <li>補 hero 文字</li>
+        <li>補 55 筆產品名稱</li>
+        <li>3 則消息改真實內容</li>
+        <li>設定 LINE 連結</li>
+      </ul>
+      <p style="font-size:13px;color:var(--mut);margin:10px 0 0">網站立即「看起來完成」。</p>
+    </div>
+    <div class="phase p1">
+      <h3>階段二（P1）</h3>
+      <div class="tm">約 1–2 日</div>
+      <ul>
+        <li>首頁區塊重排（信任條＋2×2 服務卡＋產品分流＋品牌牆＋聯絡 CTA）</li>
+        <li>群組頁：麵包屑／計數／收合樹</li>
+        <li>消息卡片化</li>
+      </ul>
+    </div>
+    <div class="phase p2">
+      <h3>階段三（P2）</h3>
+      <div class="tm">約 2–3 日</div>
+      <ul>
+        <li>詢價表單＋後台儲存</li>
+        <li>Google 地圖嵌入</li>
+        <li>品牌牆資料自動化（後台分類帶出熱門品牌）</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 第七章 附錄 ===== -->
+<section id="s7" class="sec">
+  <h2 class="sec-t"><span class="no">07</span>附錄：現況完整項目清單</h2>
+  <div class="card">
+    <ul class="clean">
+      <li><b>品牌</b>：銥晟科技有限公司（YI-SHENG Technology Co., Ltd.）／口號：半導體中古設備買賣、零件備品供應與電路板維修，提供 Cost Down 最優解／電話 0984-398-066／Email a.iris_ou@yii-sheng.com／地址 苗栗縣頭份市文化街148巷23號</li>
+      <li><b>跑馬燈</b>：快速檢測・誠信報價 ｜ 穩定 可靠 專業 效率 ｜ 中古設備買賣・零件備品供應・電路板維修・客製化加工 ｜ Cost Down 最優解</li>
+      <li><b>產品群組（7）</b>：半導體設備銷售／專業維修項目／人機介面／面板／維修服務（依設備類別）／銷售產品／電路板維修服務（依設備品牌）</li>
+      <li><b>產品分類（94）</b>：含中古機（SAW/DB/WB）、PCB/CCD/驅動器/馬達等維修、FANUC/KEYENCE/SIEMENS/TEL 等人機、BENEQ/HITACHI/Toshiba 面板、AMAT/Ebara/ASML/TEL/LAM 等品牌維修、繼電器/IGBT/伺服馬達/軸承等零件、DISCO/ASM/ACCRETECH 等品牌</li>
+      <li><b>產品（55 筆）</b>：名稱待補齊（現僅分類歸屬）</li>
+      <li><b>服務（4）</b>：中古設備（SAW/DB/WB 機台買賣）／設備零件與備品（伺服馬達/特規軸承/螺桿滑軌）／電路板維修（人機介面/Power Supply/Driver/UPS/控制板）／客製化委託（可簽 NDA、金屬/塑料加工、表面處理、CIP）</li>
+      <li><b>消息（3）</b>：現貨公告／維修案例／公司消息（皆為範例）</li>
+      <li><b>頁面（3）</b>：關於銥晟科技（philosophy）／服務優勢（about）／洽詢報價（support）</li>
+      <li><b>後台</b>：儀表板統計 7／94／55／4／3／3；模組含品牌、首頁文字、頁首橫幅、群組、分類、產品、服務、消息、頁面、操作紀錄</li>
+    </ul>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>銥晟科技官方網站・布局與格式重新編排建議報告 v1.0</span>
+    <span>資料基準：前台 API 實時數據（2026-10-27）</span>
+  </div>
+</footer>
+
+<script src="https://fastly.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<script>
+(function () {
+  var chart = echarts.init(document.getElementById('chart1'));
+  var data = [
+    { name: '產品群組', value: 7, c: '#2b2a7a' },
+    { name: '產品分類', value: 94, c: '#0a84d6' },
+    { name: '產品', value: 55, c: '#c9a24b' },
+    { name: '服務項目', value: 4, c: '#2b2a7a' },
+    { name: '最新消息', value: 3, c: '#0a84d6' },
+    { name: '頁面', value: 3, c: '#c9a24b' }
+  ];
+  chart.setOption({
+    grid: { left: 8, right: 40, top: 10, bottom: 8, containLabel: true },
+    xAxis: { type: 'value', minInterval: 1, splitLine: { lineStyle: { color: '#eef0f6' } }, axisLabel: { color: '#6a6e86' } },
+    yAxis: { type: 'category', data: data.map(function (d) { return d.name; }).reverse(), axisLabel: { color: '#22243a', fontWeight: 600 }, axisLine: { show: false }, axisTick: { show: false } },
+    series: [{
+      type: 'bar', barWidth: 16,
+      data: data.map(function (d) { return { value: d.value, itemStyle: { color: d.c, borderRadius: [0, 8, 8, 0] } }; }).reverse(),
+      label: { show: true, position: 'right', color: '#22243a', fontWeight: 700 }
+    }],
+    tooltip: { trigger: 'item', formatter: '{b}：{c} 項' }
+  });
+  window.addEventListener('resize', function () { chart.resize(); });
+})();
+</script>
+</body>
+</html>
