@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>銥晟科技 改建置規劃 — Supabase 方案</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232b2a7a'/%3E%3Ctext x='16' y='23' font-size='17' text-anchor='middle' fill='%23c9a24b' font-family='sans-serif' font-weight='bold'%3E%E9%8B%B1%3C/text%3E%3C/svg%3E">
+<style>
+  :root{
+    --navy:#2b2a7a; --acc:#0a84d6; --gold:#c9a24b; --ink:#1a1a2e;
+    --bg:#f6f5fb; --line:#dcd9ec; --muted:#66648a; --soft:#f2f0fa; --ok:#0a7d4f; --warn:#b3660a;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{font-family:"Noto Sans TC","Microsoft JhengHei","PingFang TC",sans-serif; background:var(--bg); color:var(--ink); line-height:1.65; font-size:14px;}
+  .topbar{position:sticky; top:0; z-index:50; background:rgba(27,31,107,.97); color:#fff; padding:10px 22px; display:flex; align-items:center; gap:14px; flex-wrap:wrap; box-shadow:0 2px 10px rgba(0,0,0,.18);}
+  .topbar .brand{display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.5px;}
+  .topbar .brand .lg{width:30px;height:30px;border-radius:7px;background:var(--gold);color:var(--navy);display:flex;align-items:center;justify-content:center;font-weight:900;}
+  .topbar .brand small{font-weight:400; opacity:.8;}
+  .topbar .navwrap{margin-left:auto; display:flex; align-items:center; gap:10px;}
+  .topbar select{font-size:13px; padding:7px 10px; border-radius:6px; border:none; max-width:280px;}
+  .topbar .ver{font-size:11px; background:rgba(255,255,255,.14); padding:3px 9px; border-radius:20px;}
+  main{max-width:1060px; margin:0 auto; padding:26px 22px 40px;}
+  .hero{background:linear-gradient(120deg,#1b1f6b,#0a6fc0); color:#fff; border-radius:16px; padding:34px 36px 30px; margin-bottom:26px;}
+  .hero .k{letter-spacing:3px; font-size:12px; color:#ffe6b0; font-weight:700;}
+  .hero h1{font-size:27px; font-weight:900; margin:8px 0 8px; line-height:1.3;}
+  .hero p{opacity:.92; font-size:14px; max-width:780px;}
+  .stats{display:flex; gap:26px; margin-top:20px; flex-wrap:wrap;}
+  .stats .s{background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.22); border-radius:10px; padding:10px 16px; min-width:150px;}
+  .stats .s b{display:block; font-size:20px; color:#ffe6b0;}
+  .stats .s span{font-size:12px; opacity:.85;}
+  section{margin-bottom:30px; background:#fff; border:1px solid var(--line); border-radius:14px; padding:24px 26px; scroll-margin-top:70px;}
+  h2{font-size:19px; color:var(--navy); display:flex; align-items:center; gap:10px; margin-bottom:6px;}
+  h2 .no{background:var(--navy); color:#fff; width:30px; height:30px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:800; flex:none;}
+  h2 .bar{width:42px; height:4px; background:var(--gold); border-radius:2px;}
+  .lead{color:var(--muted); font-size:13px; margin-bottom:14px;}
+  table{width:100%; border-collapse:collapse; margin:12px 0 8px; font-size:13px; table-layout:fixed;}
+  th{background:#efeefb; color:var(--navy); text-align:left; padding:9px 10px; border:1px solid var(--line); font-weight:700;}
+  td{padding:8px 10px; border:1px solid var(--line); vertical-align:top; word-break:break-word;}
+  tr:nth-child(even) td{background:#faf9ff;}
+  code, .mono{font-family:"IBM Plex Mono","Consolas",monospace; background:#f0effb; color:#4a3f9e; padding:1px 5px; border-radius:4px; font-size:12.5px;}
+  .tag{display:inline-block; font-size:11.5px; padding:2px 8px; border-radius:12px; font-weight:600; white-space:nowrap;}
+  .t-pub{background:#e4f6ec; color:var(--ok);}
+  .t-adm{background:#fdeee0; color:var(--warn);}
+  .t-full{background:#e8f0fd; color:#1d5cb8;}
+  .arch{display:grid; grid-template-columns:1fr; gap:0; margin:14px 0 6px;}
+  .arch .layer{border:2px solid var(--navy); border-radius:12px; padding:12px 18px; background:#fff; display:flex; align-items:center; gap:14px; flex-wrap:wrap;}
+  .arch .layer.acc{border-color:var(--acc);}
+  .arch .layer.cloud{border-color:#3ecf8e; background:#f0fbf6;}
+  .arch .arrow{text-align:center; color:var(--acc); font-weight:800; font-size:16px; line-height:1;}
+  .arch .lbl{font-weight:800; color:var(--navy); min-width:120px;}
+  .arch .lbl.cloud{color:#0a7d4f;}
+  .arch ul{list-style:disc; font-size:13px; color:#444; padding-left:22px;}
+  .arch ul li{padding-left:2px;}
+  .flow{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:14px 0;}
+  .flow .step{border:1.5px solid var(--line); border-radius:10px; padding:12px 14px; background:#fff; position:relative;}
+  .flow .step .n{width:26px;height:26px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;margin-bottom:8px;}
+  .flow .step b{font-size:13px; display:block; margin-bottom:4px;}
+  .flow .step span{font-size:12px; color:var(--muted);}
+  .steps{margin:12px 0; list-style:none;}
+  .steps li{position:relative; padding:0 0 18px 26px;}
+  .steps li::before{content:""; position:absolute; left:7px; top:4px; bottom:-2px; width:2px; background:var(--line);}
+  .steps li:last-child::before{display:none;}
+  .steps li .dot{position:absolute; left:0; top:2px; width:16px; height:16px; border-radius:50%; background:var(--acc); border:3px solid #dcebfa;}
+  .steps li b{color:var(--navy);}
+  .steps li span{color:var(--muted); font-size:12.5px; display:block;}
+  .cost{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:14px 0;}
+  .cost .c{border:1.5px solid var(--line); border-radius:12px; padding:16px 18px; text-align:center;}
+  .cost .c.hot{border-color:var(--gold); background:#fffdf6;}
+  .cost .c.best{border-color:var(--ok); background:#f2fbf6;}
+  .cost .c .price{font-size:24px; font-weight:900; color:var(--navy);}
+  .cost .c .price small{font-size:12px; font-weight:600; color:var(--muted);}
+  .cost .c ul{list-style:none; font-size:12.5px; color:#555; margin-top:8px; text-align:left;}
+  .cost .c ul li{padding:3px 0 3px 14px; position:relative;}
+  .cost .c ul li::before{content:"✓"; position:absolute; left:0; color:var(--ok); font-weight:800;}
+  .warnbox{background:#fff8ec; border:1px solid #ecd9a8; border-radius:10px; padding:12px 16px; font-size:13px; color:#6b5416; margin-top:10px;}
+  .decide{background:#fffdf6; border:2px solid var(--gold); border-radius:12px; padding:16px 20px; margin-top:12px;}
+  .decide .line{display:flex; align-items:center; gap:12px; flex-wrap:wrap; font-size:13.5px;}
+  .decide .node{font-weight:800; color:var(--navy);}
+  .decide .arrowb{color:var(--gold); font-weight:900;}
+  .twocol{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:12px;}
+  .cmp{border:1.5px solid var(--line); border-radius:12px; overflow:hidden;}
+  .cmp h3{font-size:13.5px; padding:10px 14px; margin:0; color:#fff;}
+  .cmp.a h3{background:var(--navy);}
+  .cmp.b h3{background:#3ecf8e; color:#073b21;}
+  .cmp table{margin:0; border:none;}
+  .cmp td:first-child{width:38%; color:var(--muted); font-weight:600; background:#faf9ff;}
+  footer{margin:26px 0 10px; text-align:center; color:var(--muted); font-size:12px;}
+  @media (max-width:760px){
+    .flow{grid-template-columns:1fr 1fr;}
+    .cost{grid-template-columns:1fr;}
+    .twocol{grid-template-columns:1fr;}
+    main{padding:16px 12px 30px;}
+    section{padding:18px 16px;}
+    .hero{padding:24px 20px;}
+    .hero h1{font-size:21px;}
+    .topbar select{max-width:190px;}
+    .arch .layer{font-size:12.5px;}
+    .tag{white-space:normal;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand"><span class="lg">銥</span>銥晟科技官方網站 <small>改建置規劃</small></div>
+  <div class="navwrap">
+    <select onchange="if(this.value)location.hash=this.value;this.selectedIndex=0;" aria-label="章節跳轉">
+      <option value="">選擇章節…</option>
+      <option value="#s1">01 決策背景</option>
+      <option value="#s2">02 資料表對應</option>
+      <option value="#s3">03 後台 API 對應</option>
+      <option value="#s4">04 前台讀取</option>
+      <option value="#s5">05 後台介面</option>
+      <option value="#s6">06 遷移路徑</option>
+      <option value="#s7">07 費用估算</option>
+      <option value="#s8">08 風險與限制</option>
+      <option value="#s9">09 決定流程</option>
+      <option value="#s10">10 影響總結</option>
+    </select>
+    <span class="ver">v1.0</span>
+  </div>
+</div>
+
+<main>
+
+  <div class="hero">
+    <div class="k">銥晟科技 官方網站暨後台管理系統</div>
+    <h1>方案 B：Supabase 雲端後端 改建置規劃</h1>
+    <p>當客戶僅能使用<strong>共享虛擬主機</strong>（無法執行 Node.js 後端）時，改以「前台靜態＋Supabase 雲端後端」架構，確保<strong>後台管理系統完整運作</strong>。前台設計完全不變，僅資料來源改接雲端。</p>
+    <div class="stats">
+      <div class="s"><b>11</b><span>資料表對應</span></div>
+      <div class="s"><b>14+</b><span>API 對應項目</span></div>
+      <div class="s"><b>US$0</b><span>初期月費（免費版）</span></div>
+      <div class="s"><b>2 階段</b><span>遷移路徑</span></div>
+    </div>
+  </div>
+
+  <section id="s1">
+    <h2><span class="no">01</span>決策背景與架構<span class="bar"></span></h2>
+    <table>
+      <colgroup><col style="width:22%"><col style="width:78%"></colgroup>
+      <tr><th>觸發條件</th><td>客戶確認僅能使用<strong>共享虛擬主機</strong>（cPanel／Plesk 網頁空間，僅 PHP＋MySQL，無法安裝 Node.js／PM2）</td></tr>
+      <tr><th>核心問題</th><td>後台管理需要伺服器端 API 與資料庫讀寫，共享主機無法運行 Express 後端</td></tr>
+      <tr><th>本方案作法</th><td><strong>前台網站</strong>（純 HTML/JS/CSS）放共享主機；<strong>後台管理＋資料庫</strong>改用 <strong>Supabase</strong>（雲端 PostgreSQL＋Auth＋REST API）</td></tr>
+      <tr><th>前台設計</th><td><strong>完全不變</strong>：沿用原設計系統（色彩／字型／LOGO／影片／導覽），僅資料來源改為 Supabase</td></tr>
+    </table>
+    <div class="arch">
+      <div class="layer">
+        <span class="lbl">使用者瀏覽器</span>
+        <ul>
+          <li>前台（共享主機，靜態 HTML/JS/CSS）— supabase-js 僅讀取公開資料（anon key＋RLS）</li>
+          <li>後台（共享主機，管理介面網頁）— Auth 登入 → CRUD 寫入（authenticated 角色＋RLS）</li>
+        </ul>
+      </div>
+      <div class="arrow">↓</div>
+      <div class="layer cloud">
+        <span class="lbl cloud">Supabase 雲端</span>
+        <ul><li>PostgreSQL（資料庫）· Auth（登入認證）· REST API（讀寫）· Storage（圖片／檔案）</li></ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="s2">
+    <h2><span class="no">02</span>資料表對應（11 表 → Supabase）<span class="bar"></span></h2>
+    <p class="lead">欄位結構與規劃書一致，型態由 SQLite 對應至 PostgreSQL；可於 Supabase 管理介面（SQL Editor）直接建表。</p>
+    <table>
+      <colgroup><col style="width:16%"><col style="width:30%"><col style="width:34%"><col style="width:20%"></colgroup>
+      <tr><th>規劃書資料表</th><th>Supabase 對應</th><th>主要欄位</th><th>存取權限（RLS）</th></tr>
+      <tr><td><code>users</code></td><td>改用 <strong>Supabase Auth</strong>（auth.users）＋ <code>profiles</code> 表存角色</td><td>Email／密碼內建；profiles：id、role(admin/editor)</td><td><span class="tag t-full">僅 admin 可寫</span></td></tr>
+      <tr><td><code>brand</code></td><td><code>brand</code>（單列）</td><td>id、name、en、slogan、phone、email、addr、hours、affil、line</td><td><span class="tag t-pub">公開讀</span><span class="tag t-adm">admin 寫</span></td></tr>
+      <tr><td><code>hero</code></td><td><code>hero</code>（單列）</td><td>eyebrow、sub、title、intro</td><td><span class="tag t-pub">公開讀</span><span class="tag t-adm">admin 寫</span></td></tr>
+      <tr><td><code>prod_intro</code></td><td><code>prod_intro</code>（單列）</td><td>text</td><td><span class="tag t-pub">公開讀</span><span class="tag t-adm">admin 寫</span></td></tr>
+      <tr><td><code>groups</code></td><td><code>groups</code></td><td>id、label、sort_order</td><td><span class="tag t-pub">公開讀</span><span class="tag t-adm">admin 全權限</span></td></tr>
+      <tr><td><code>categories</code></td><td><code>categories</code></td><td>id、group_id(FK)、name、sec、sort_order</td><td><span class="tag t-pub">公開讀</span><span class="tag t-adm">admin 全權限</span></td></tr>
+      <tr><td><code>items</code></td><td><code>items</code></td><td>id、category_id(FK)、model、brand、desc、sort_order</td><td><span class="tag t-pub">公開讀</span><span class="tag t-adm">admin 全權限</span></td></tr>
+      <tr><td><code>services</code></td><td><code>services</code></td><td>id、no、title、desc、sort_order</td><td><span class="tag t-pub">公開讀</span><span class="tag t-adm">admin 全權限</span></td></tr>
+      <tr><td><code>posts</code></td><td><code>posts</code></td><td>id、date、title、body、published(bool)、created_at</td><td><span class="tag t-pub">公開僅讀已發布</span><span class="tag t-adm">admin 全權限</span></td></tr>
+      <tr><td><code>pages</code></td><td><code>pages</code></td><td>id、key(unique)、title、body</td><td><span class="tag t-pub">公開讀</span><span class="tag t-adm">admin 寫</span></td></tr>
+      <tr><td><code>activity_log</code></td><td><code>activity_log</code></td><td>id、user_id(FK)、action、target、detail、created_at</td><td><span class="tag t-full">僅 admin 讀</span></td></tr>
+    </table>
+    <div class="warnbox"><b>RLS 核心防護：</b>前台使用公開金鑰（anon key）僅能 SELECT 公開資料；寫入操作需登入且符合角色規則，即使金鑰外流也無法竄改資料。</div>
+  </section>
+
+  <section id="s3">
+    <h2><span class="no">03</span>後台 API 對應（Express 路由 → Supabase）<span class="bar"></span></h2>
+    <p class="lead">規劃書第 7 節的 REST API 全部由 Supabase SDK／REST 介面取代，無需自建伺服器。</p>
+    <table>
+      <colgroup><col style="width:30%"><col style="width:52%"><col style="width:18%"></colgroup>
+      <tr><th>規劃書 Express 路由</th><th>Supabase 對應操作（supabase-js v2）</th><th>備註</th></tr>
+      <tr><td><code>POST /api/auth/login</code></td><td><code>signInWithPassword({ email, password })</code></td><td>取代 Session</td></tr>
+      <tr><td><code>POST /api/auth/logout</code></td><td><code>signOut()</code></td><td>—</td></tr>
+      <tr><td><code>GET /api/me</code></td><td><code>auth.getUser()</code></td><td>目前登入者</td></tr>
+      <tr><td><code>GET /api/site</code></td><td>多表查詢；建議建 <code>view_site</code> 聚合</td><td>前台聚合</td></tr>
+      <tr><td><code>GET /api/posts</code></td><td><code>from('posts').select().eq('published',true).order('date')</code></td><td>僅已發布</td></tr>
+      <tr><td><code>PUT /api/admin/brand</code></td><td><code>from('brand').update({...}).eq('id',1)</code></td><td>單列</td></tr>
+      <tr><td><code>PUT /api/admin/hero</code></td><td><code>from('hero').update({...}).eq('id',1)</code></td><td>單列</td></tr>
+      <tr><td><code>PUT /api/admin/prod-intro</code></td><td><code>from('prod_intro').update({...}).eq('id',1)</code></td><td>單列</td></tr>
+      <tr><td><code>…/groups、categories、items、services、posts CRUD</code></td><td><code>from('表').select()/insert()/update().eq('id')/delete().eq('id')</code></td><td>各模組 CRUD</td></tr>
+      <tr><td><code>PUT /api/admin/pages/:key</code></td><td><code>from('pages').update({...}).eq('key', key)</code></td><td>資訊頁</td></tr>
+      <tr><td><code>GET /api/admin/activity-log</code></td><td><code>from('activity_log').select().order('created_at', desc)</code></td><td>稽核</td></tr>
+    </table>
+  </section>
+
+  <section id="s4">
+    <h2><span class="no">04</span>前台資料讀取對應<span class="bar"></span></h2>
+    <table>
+      <colgroup><col style="width:22%"><col style="width:36%"><col style="width:42%"></colgroup>
+      <tr><th>前台頁面</th><th>原資料來源</th><th>Supabase 對應</th></tr>
+      <tr><td>首頁</td><td><code>/api/site</code></td><td>hero／brand／services／groups 查詢＋intro.mp4 放共享主機或 Storage</td></tr>
+      <tr><td>產品群組頁</td><td><code>/api/site</code></td><td><code>from('groups').select('*, categories(*, items(*))').eq('id', id)</code></td></tr>
+      <tr><td>產品搜尋</td><td><code>/api/site</code></td><td><code>from('items').select().ilike('model', %q%).or(...)</code>＋分類篩選</td></tr>
+      <tr><td>最新消息</td><td><code>/api/posts</code></td><td><code>from('posts').select().eq('published',true).order('date', desc)</code></td></tr>
+      <tr><td>資訊頁／聯絡</td><td><code>/api/site</code></td><td><code>from('pages').select().eq('key', key)</code></td></tr>
+    </table>
+    <div class="warnbox">前台使用 <b>anon key（公開金鑰）</b>；因 RLS 僅開放 SELECT 公開資料，金鑰外流也無法寫入。</div>
+  </section>
+
+  <section id="s5">
+    <h2><span class="no">05</span>後台管理介面（沿用全部模組）<span class="bar"></span></h2>
+    <div class="flow">
+      <div class="step"><div class="n">1</div><b>管理員登入</b><span>Supabase Auth（Email＋密碼），介面放共享主機</span></div>
+      <div class="step"><div class="n">2</div><b>內容 CRUD</b><span>品牌／hero／群組／分類／產品／服務／消息／頁面，全部可新增編輯刪除</span></div>
+      <div class="step"><div class="n">3</div><b>儀表板與排序</b><span>統計數字、sort_order 排序、刪除二次確認</span></div>
+      <div class="step"><div class="n">4</div><b>操作紀錄</b><span>activity_log 寫入與查詢（稽核）</span></div>
+    </div>
+  </section>
+
+  <section id="s6">
+    <h2><span class="no">06</span>遷移路徑（兩階段）<span class="bar"></span></h2>
+    <div class="twocol">
+      <div class="cmp a"><h3>階段 A：資料遷移（SQLite → Supabase）</h3>
+        <ul class="steps">
+          <li><span class="dot"></span><b>建立 Supabase 專案</b><span>建議區域：新加坡或東京（台灣延遲低）</span></li>
+          <li><span class="dot"></span><b>SQL Editor 建表＋RLS</b><span>11 張表＋profiles＋view_site＋Policies</span></li>
+          <li><span class="dot"></span><b>匯入 Seed 資料</b><span>7 群組／94 分類／55 產品／4 服務／3 消息／3 頁面／品牌／hero</span></li>
+          <li><span class="dot"></span><b>匯入方式</b><span>① 管理介面 CSV 匯入；② 一次性 Node 腳本寫入</span></li>
+          <li><span class="dot"></span><b>驗證筆數</b><span>逐表 COUNT 比對原資料一致</span></li>
+        </ul>
+      </div>
+      <div class="cmp b"><h3>階段 B：程式改接</h3>
+        <ul class="steps">
+          <li><span class="dot"></span><b>前台改接</b><span>fetch('/api/site') → supabase-js 查詢（anon key）</span></li>
+          <li><span class="dot"></span><b>後台 SPA</b><span>Preact 管理介面（登入＋各模組 CRUD＋儀表板）</span></li>
+          <li><span class="dot"></span><b>上傳共享主機</b><span>前台與後台皆為靜態檔，無需 Node 執行環境</span></li>
+          <li><span class="dot"></span><b>移除自建後端依賴</b><span>Express／SQLite／PM2 不再需要</span></li>
+          <li><span class="dot"></span><b>驗收</b><span>對照規劃書第 12 節逐項測試</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="warnbox">反向遷移亦可行：<code>pg_dump</code> 匯出資料 → 匯入自有 PostgreSQL → 前台改回自家 API；資料為標準 PostgreSQL，無綁定。</div>
+  </section>
+
+  <section id="s7">
+    <h2><span class="no">07</span>費用估算<span class="bar"></span></h2>
+    <div class="cost">
+      <div class="c best">
+        <div class="price">US$0<small>／月</small></div>
+        <b>Supabase 免費版</b>
+        <ul><li>500 MB PostgreSQL</li><li>每月 50,000 登入用戶</li><li>每日 50 MB 傳輸</li><li>1 GB Storage（二期圖片）</li><li>每日自動備份</li></ul>
+      </div>
+      <div class="c hot">
+        <div class="price">US$25<small>／月（約 NT$800）</small></div>
+        <b>Supabase 專業版</b>
+        <ul><li>8 GB 資料庫</li><li>100 萬月活躍用戶</li><li>50 GB／月傳輸</li><li>100 GB Storage</li></ul>
+      </div>
+      <div class="c">
+        <div class="price">NT$300–600<small>／月</small></div>
+        <b>方案 A：VPS（比較）</b>
+        <ul><li>自有 Ubuntu 伺服器</li><li>Node/Express 後端</li><li>資料在公司伺服器</li><li>需租 VPS＋域名</li></ul>
+      </div>
+    </div>
+    <p class="lead" style="margin-top:6px;">若客戶<strong>已經在付共享虛擬主機的費用</strong>，方案 B 初期等於<strong>零新增費用</strong>（Free 版足夠支撐小型官網）。</p>
+  </section>
+
+  <section id="s8">
+    <h2><span class="no">08</span>風險與限制（須向客戶說明）<span class="bar"></span></h2>
+    <table>
+      <colgroup><col style="width:22%"><col style="width:48%"><col style="width:30%"></colgroup>
+      <tr><th>項目</th><th>說明</th><th>因應</th></tr>
+      <tr><td>資料在雲端</td><td>品牌／產品資料存放 Supabase 機房（海外）</td><td>可選新加坡／東京區域；定期匯出備份</td></tr>
+      <tr><td>依賴第三方</td><td>Supabase 為第三方服務</td><td>資料為標準 PostgreSQL，可隨時搬回自有伺服器</td></tr>
+      <tr><td>台灣訪問速度</td><td>海外機房延遲略高</td><td>前台靜態檔在台灣共享主機，仍為本地速度</td></tr>
+      <tr><td>二期圖片上傳</td><td>需用 Supabase Storage</td><td>免費 1GB 足夠初期</td></tr>
+    </table>
+  </section>
+
+  <section id="s9">
+    <h2><span class="no">09</span>決定流程<span class="bar"></span></h2>
+    <div class="decide">
+      <div class="line"><span class="node">客戶主機類型確認</span> <span class="arrowb">→</span> <span>可用 VPS？</span> <span class="arrowb">→</span> <b>維持方案 A（Node/Express）</b></div>
+      <div class="line" style="margin-top:8px;"><span class="node">僅有共享虛擬主機？</span> <span class="arrowb">→</span> <b>採用本方案 B（Supabase）</b></div>
+    </div>
+    <p class="lead" style="margin-top:12px;">確認清單：共享主機確認／是否已租（零新增費用）／同意資料存放雲端／正式域名與上傳方式／後台管理員 Email（1–2 名）。</p>
+  </section>
+
+  <section id="s10">
+    <h2><span class="no">10</span>影響總結<span class="bar"></span></h2>
+    <table>
+      <colgroup><col style="width:28%"><col style="width:36%"><col style="width:36%"></colgroup>
+      <tr><th>項目</th><th>方案 A（Node/Express）</th><th>方案 B（Supabase）</th></tr>
+      <tr><td>前台設計</td><td>不變</td><td><strong>不變</strong></td></tr>
+      <tr><td>後台管理</td><td>完整</td><td><strong>完整（功能對應）</strong></td></tr>
+      <tr><td>後端環境</td><td>需 VPS</td><td><strong>不需（共享主機即可）</strong></td></tr>
+      <tr><td>資料位置</td><td>自有伺服器</td><td>雲端（Supabase）</td></tr>
+      <tr><td>初期月費</td><td>NT$300–600</td><td><strong>NT$0（若共享主機已租）</strong></td></tr>
+      <tr><td>日後遷移自有伺服器</td><td>不需</td><td>可（pg_dump 匯出）</td></tr>
+      <tr><td>DEMO 現況</td><td>即為正式雛形</td><td>前台可沿用，後端改接</td></tr>
+    </table>
+  </section>
+
+  <footer>
+    輔凰有限公司 · 銥晟科技網站建置專案 · Supabase 方案改建置規劃 v1.0（2026-10-27）<br>
+    對應文件：銥晟科技網站建置規劃書 v1.0 ／ 客戶伺服器環境需求與預先建置報告 v1.0
+  </footer>
+
+</main>
+</body>
+</html>
